@@ -1,6 +1,7 @@
 # IDS 131
 [Predicting Bike Use Demand](https://www.kaggle.com/viveksrinivasan/eda-ensemble-model-top-10-percentile)
 [Mobike Visualization in Shenzhen](https://www.youtube.com/watch?v=U2ieDkuJJqA)
+[Hubway Visualization Challenge](http://hubwaydatachallenge.org/)
 
 ## Commute Oriented Biking Share Analysis
 
