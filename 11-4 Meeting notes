@@ -1,0 +1,46 @@
+Talk about feedback
+	1. Plotting locations on a map
+		maptools, OpenStreetMaps
+		
+	2. First/Last Mile
+		How is the current system already used for First-Mile last Mile commuting?
+		Which bike stops are transit stations - find T stops that have Hubway nearby
+		Percentage of users doing this
+		
+	3. Time Saved - else
+		Expected walking distance
+		Pick most common blue bike routes  to compare and their neighborhoods
+		Compare to car time if took Uber - try with Google Maps API 
+		Time vary - commuting vs weekend times
+		Neighborhoods
+			Voronoi maps over Google maps to understand how far people will
+				Over Google maps https://www.showmeshiny.com/google-maps-voronoi/
+				Algorithm https://courses.cs.washington.edu/courses/cse326/00wi/projects/voronoi.html
+		Seasonal Differences 
+		How far do people expect to walk to nearest hubway - which neighborhoods are underserved?
+			observations : are stations with smaller expected walk time more popular?
+		
+		Steps: 
+			pick routes of interest
+			build voronoi diagram for areas of interest 
+			find avg  time to bike (avg walk + bike + walk)
+			find avg car commute time (Google maps API) + Uber wait time
+			Compare time saved (diff between) w/ uncertainty measures (Entropy or variance)
+			
+		
+	4. Networks - Jinghong, Miranda 
+		Build network of nodes as hubway 
+		measure flow between stations - some weight for passing by, vs 
+		clustering in geographical areas - areas that are more connected
+		compare to a model of the network 
+		
+		Transit stops? 
+		Visualizations
+	
+	5. Action Items
+		Time Saved - understand API inputs, outputs, endpoints
+		Networks - https://networkx.github.io/
+			save location information as attributes
+			save file of graph
+			think up subquestions to ask and graph analysis 
+			cluster based on usage or neighborhood characteristics 
