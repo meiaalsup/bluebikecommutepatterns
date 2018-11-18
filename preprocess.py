@@ -30,6 +30,29 @@ index_map = {
     key: i for i, key in enumerate(get_headers(2018, 9))
 }
 
+def get_full_year():
+    '''
+    Get data for the full year, note this is not sorted and is constructed with rows in random order
+    '''
+    y2018 = {i+1: preprocess(2018, i+1) for i in range(9)}
+    y2017 = {i: preprocess(2017, i) for i in range(10,13)}
+    return np.vstack([month for month in {**y2017, **y2018}.values()])
+
+def get_station_coordinates(full_year=None):
+    '''
+    Maps station ids to their respective latitudes and longitudes
+    '''
+    print(full_year)
+    if full_year is None:
+        full_year = get_full_year()
+    return {
+        int(row[index_map['endstationid']]):
+        (float(row[index_map['endstationlatitude']]), float(row[index_map['endstationlongitude']]))
+        for row in full_year
+    }
+
+station_coordinates = get_station_coordinates()
+
 def _in_range(time, interval):
     return 1 if (parser.parse(time).hour <= interval[1] and parser.parse(time).hour >= interval[0]) else 0
 
@@ -63,23 +86,3 @@ def plot_station_use_heat_map(dataset, interval=(0,24), start=True):
     plt.colorbar()
     plt.show()
 
-def get_full_year():
-    '''
-    Get data for the full year, note this is not sorted and is constructed with rows in random order
-    '''
-    y2018 = {i+1: preprocess(2018, i+1) for i in range(9)}
-    y2017 = {i: preprocess(2017, i) for i in range(10,13)}
-    return np.vstack([month for month in {**y2017, **y2018}.values()])
-
-def get_station_coordinates(full_year=None):
-    '''
-    Maps station ids to their respective latitudes and longitudes
-    '''
-    print(full_year)
-    if full_year is None:
-        full_year = get_full_year()
-    return {
-        int(row[index_map['endstationid']]):
-        (float(row[index_map['endstationlatitude']]), float(row[index_map['endstationlongitude']]))
-        for row in full_year
-    }
