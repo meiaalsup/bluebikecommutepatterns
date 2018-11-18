@@ -11,5 +11,6 @@ with f:
     writer = csv.DictWriter(f, fieldnames=fields)
     writer.writeheader()
     for id_, coords in station_coordinates.items():
-        writer.writerow({'station_id': id_, 'latitude': coords[0], 'longitude': coords[1]})
+        if coords[0] > 0:
+            writer.writerow({'station_id': id_, 'latitude': coords[0], 'longitude': coords[1]})
 
