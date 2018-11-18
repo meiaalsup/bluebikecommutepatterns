@@ -1,8 +1,11 @@
-##Get travel time by destination and different mode
+## Get travel time by destination and different mode
 
 install.packages("gmapsdistance")
 library("gmapsdistance")
+
+## This is my personal API
 set.api.key("AIzaSyCJnz9dwMTva-N8xTMC-MQGgFQRnqK4Hh8")
+
 results <- gmapsdistance(origin = "Washington+DC",
                          destination = "New+York+City+NY",
                          mode = "driving")
