@@ -42,7 +42,6 @@ def get_station_coordinates(full_year=None):
     '''
     Maps station ids to their respective latitudes and longitudes
     '''
-    print(full_year)
     if full_year is None:
         full_year = get_full_year()
     return {
