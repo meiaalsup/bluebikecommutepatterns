@@ -26,6 +26,10 @@ def get_headers(year, month):
     fo = open(_get_path(year, month), "r")
     return [header.strip("\"").replace(" ", "").strip("\n") for header in fo.readlines()[0].split(",")]
 
+index_map = {
+    key: i for i, key in enumerate(get_headers(2018, 9))
+}
+
 def _in_range(time, interval):
     return 1 if (parser.parse(time).hour <= interval[1] and parser.parse(time).hour >= interval[0]) else 0
 
@@ -67,12 +71,15 @@ def get_full_year():
     y2017 = {i: preprocess(2017, i) for i in range(10,13)}
     return np.vstack([month for month in {**y2017, **y2018}.values()])
 
-def get_station_coordinates():
+def get_station_coordinates(full_year=None):
     '''
     Maps station ids to their respective latitudes and longitudes
     '''
+    print(full_year)
+    if full_year is None:
+        full_year = get_full_year()
     return {
         int(row[index_map['endstationid']]):
         (float(row[index_map['endstationlatitude']]), float(row[index_map['endstationlongitude']]))
-        for row in get_full_year()
+        for row in full_year
     }
