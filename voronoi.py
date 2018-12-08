@@ -106,5 +106,5 @@ def create_voronoi():
     plt.ylim(vor.min_bound[1] - 0.01, vor.max_bound[1] + 0.01)
 
     plt.show()
-    return vor
+    return vor, regions, vertices
 
