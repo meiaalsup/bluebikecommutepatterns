@@ -1,0 +1,22 @@
+##Install Packages
+install.packages("gmapsdistance")
+library("gmapsdistance")
+
+##Set API Key
+set.api.key("...")
+
+##Load Data this is for station 53
+s53 <- fread("r53.csv")
+var <- seq(1,200,by=1)
+
+##Loop for the points
+for (i in var){
+  startpoint <- paste0(as.character(s53[i,2]),"+",as.character(s53[i,1]))
+  
+  results = gmapsdistance(origin = startpoint, destination = "42.35083+-71.08981",
+                          mode = "walking")
+  
+  s53$start_time[i] <- results$Time 
+
+  Sys.sleep(2.5)
+}

@@ -4,7 +4,7 @@ install.packages("gmapsdistance")
 library("gmapsdistance")
 
 ## This is my personal API, I assume everyone signing up for one so we can work simultaneously
-set.api.key("AIzaSyCJnz9dwMTva-N8xTMC-MQGgFQRnqK4Hh8")
+set.api.key("...")
 
 ## Sample 01
 results <- gmapsdistance(origin = "Washington+DC",
