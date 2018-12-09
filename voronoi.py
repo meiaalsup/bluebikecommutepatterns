@@ -102,9 +102,11 @@ def create_voronoi():
         plt.fill(*zip(*polygon), alpha=0.4)
 
     plt.plot(coords[:,0], coords[:,1], 'ko', markersize=1)
-    plt.xlim(vor.min_bound[0] - 0.01, vor.max_bound[0] + 0.01)
-    plt.ylim(vor.min_bound[1] - 0.01, vor.max_bound[1] + 0.01)
+    plt.xlim(vor.min_bound[0] - 0.002, vor.max_bound[0] + 0.002)
+    plt.ylim(vor.min_bound[1] - 0.002, vor.max_bound[1] + 0.002)
 
+    plt.savefig('voronoi.jpg')
     plt.show()
     return vor, regions, vertices
 
+create_voronoi()
