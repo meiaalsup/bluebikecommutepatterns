@@ -84,12 +84,13 @@ EEdges = [(p[0], p[1], EWeights[p]) for p in EWeights]
 OverallM = nx.DiGraph()
 OverallM.add_nodes_from(MVertices)
 OverallM.add_weighted_edges_from(MEdges)
-nx.set_node_attributes(OverallM, 'Position', locsM)
+print(locsM)
+nx.set_node_attributes(OverallM, name='Position', values=locsM)
 
 OverallE = nx.DiGraph() 
 OverallE.add_nodes_from(EVertices)
 OverallE.add_weighted_edges_from(EEdges)
-nx.set_node_attributes(OverallE, 'Position', locsE)
+nx.set_node_attributes(OverallE, name='Position', values=locsE)
 
 eveclusters = pd.read_pickle("cluterLabels-evening.pkl")
 mornclusters = pd.read_pickle("cluterLabels-morning.pkl")
@@ -108,7 +109,6 @@ def plot_stations(graph, clabels):
     names = []
     clusters = []
     #print(clabels)
-    print(len(G.nodes()))
     failed = []
     pos = {}
     clust = {}
