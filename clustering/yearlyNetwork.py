@@ -11,6 +11,10 @@ from collections import defaultdict
 from matplotlib import cm
 import pandas as pd
 from sklearn import cluster
+from dateutil import parser
+from multiprocessing import Pool
+from functools import partial
+import folium
 
 
 ### CREATION ###
@@ -98,7 +102,7 @@ evedict = eveclusters.to_dict(orient='index')
 morndict = mornclusters.to_dict(orient='index')
 print()
 ###PRINT IMAGE###
-def plot_stations(G, clabels):
+def plot_stations(graph, clabels):
     lat = [] 
     lon = []
     names = []
@@ -106,13 +110,18 @@ def plot_stations(G, clabels):
     #print(clabels)
     print(len(G.nodes()))
     failed = []
-    for node, attr in G.nodes(data=True):
+    pos = {}
+    clust = {}
+
+    for node, attr in graph.nodes(data=True):
         if(attr):
             try: 
                 l = clabels[int(node)]['Label']
                 clusters.append(l)
-                lon.append(attr['Position'][0])
-                lat.append(attr['Position'][1])
+                pos[node] = (attr['Position'][0], attr['Position'][1])
+                clust[node] = l
+                #lon.append(attr['Position'][0])
+                #lat.append(attr['Position'][1])
                 names.append(node)
             except:
                 failed.append(node)
@@ -120,14 +129,72 @@ def plot_stations(G, clabels):
              print("failed attr", node, attr)
     print(failed) 
     # Plot...
-    plt.scatter(lon, lat, c=clusters, s=10, cmap='tab10')
-    buffer = .02
+    plt.figure(figsize = (10,9))
+    
+    m = folium.Map([42.337102, -71.1], tiles='Stamen Terrain', zoom_start=12, max_zoom=18)
+    '''for _id, coords in pos.items():
+        folium.CircleMarker(
+            [coords[1], coords[0]],
+            radius = 1,
+            popup=f'{_id}',
+        ).add_to(m)'''
+
+    #plt.scatter(lon, lat, c=clusters, s=10, cmap='tab10')
+    nx.draw_networkx_nodes(G = graph, pos = pos, node_list = graph.nodes(), alpha = 0.8, node_size = 20, node_color = clusters, cmap ="tab10")
+
+    #buffer = .02
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
     # adjust axis because of 0 (null) values in lat / long
-    plt.ylim((min([i for i in lat if i > 0])-buffer, max(lat)+buffer))
-    plt.xlim((min(lon)-buffer, max([i for i in lon if i < 0])+buffer))
+    #plt.ylim((min([i for i in lat if i > 0])-buffer, max(lat)+buffer))
+    #plt.xlim((min(lon)-buffer, max([i for i in lon if i < 0])+buffer))
+
     plt.show()
 
-plot_stations(OverallE, evedict)
-plot_stations(OverallM, morndict)
+#plot_stations(OverallE, evedict)
+# plot_stations(OverallM, morndict)
+
+def graph_to_edge_matrix(G):
+    """Convert a networkx graph into an edge matrix.
+    See https://www.wikiwand.com/en/Incidence_matrix for a good explanation on edge matrices
+   
+    Parameters
+    ----------
+    G : networkx graph
+    """
+    # Initialize edge matrix with zeros
+    intNodes = [int(i) for i in G.nodes()]
+    print("NumNodes : " + str(len(G)))
+
+    maxN = max(intNodes) + 1
+    edge_mat = np.zeros((maxN, maxN), dtype=int)
+
+    # Loop to set 0 or 1 (diagonal elements are set to 1)
+    for start, end, a in G.edges(data=True):
+        weight = a['weight']
+        edge_mat[int(start)][int(end)] += weight
+
+    return edge_mat
+
+k_clusters = 3
+
+MMatrix = graph_to_edge_matrix(OverallM)
+EMatrix = graph_to_edge_matrix(OverallE)
+
+MModel = cluster.KMeans(n_clusters=k_clusters, n_init=200)
+EModel = cluster.KMeans(n_clusters=k_clusters, n_init=200)
+
+MModel.fit(MMatrix)
+EModel.fit(EMatrix)
+
+ELabels = list(EModel.labels_)
+MLabels = list(MModel.labels_)
+Edf = pd.DataFrame(data = ELabels, index = range(len(EMatrix)), columns = ['Label'])
+
+Mdf = pd.DataFrame(data = MLabels, index = range(len(MMatrix)), columns = ['Label'])
+
+newMdict = Mdf.to_dict(orient='index')
+newEdict = Edf.to_dict(orient='index')
+
+plot_stations(OverallE, newEdict)
+plot_stations(OverallM, newMdict)
