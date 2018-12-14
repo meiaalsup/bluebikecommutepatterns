@@ -1,4 +1,7 @@
 # IDS 131 Final Project
+
+## [Final Paper](https://github.com/meiaalsup/ids131/blob/master/finalpaper.pdf)
+
 #### [Predicting Bike Use Demand](https://www.kaggle.com/viveksrinivasan/eda-ensemble-model-top-10-percentile)
 #### [Mobike Visualization in Shenzhen](https://www.youtube.com/watch?v=U2ieDkuJJqA)
 #### [Hubway Visualization Challenge](http://hubwaydatachallenge.org/)
